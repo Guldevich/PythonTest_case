@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Бронирование комнаты</title>
+</head>
+<body>
+    <h1>Бронирование комнаты: {{ room.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="check_in_date">Дата заезда:</label>
+        <input type="date" name="check_in_date" id="check_in_date" required>
+        <br>
+        <label for="check_out_date">Дата выезда:</label>
+        <input type="date" name="check_out_date" id="check_out_date" required>
+        <br>
+        <input type="submit" value="Забронировать">
+    </form>
+</body>
+</html>

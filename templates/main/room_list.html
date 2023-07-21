@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Room list</title>
+</head>
+<body>
+    <h1>Room list</h1>
+    {% if user.is_authenticated %}
+        <p>You are logged as: {{ user.username }}</p>
+         <a href="{% url 'logout' %}">Logout</a>
+    {% endif %}
+    <form method="get">
+        <label for="price_filter">Price (up to):</label>
+        <input type="number" name="price" id="price_filter" min="0">
+        <br>
+        <label for="capacity_filter">Capacity (min.):</label>
+        <input type="number" name="capacity" id="capacity_filter" min="1">
+        <br>
+        <label for="check_in_date">Check in:</label>
+        <input type="date" name="check_in_date" id="check_in_date">
+        <br>
+        <label for="check_out_date">Check out:</label>
+        <input type="date" name="check_out_date" id="check_out_date">
+        <br>
+        <label for="sort">Sort:</label>
+        <select name="sort" id="sort">
+            <option value="">-- Choose --</option>
+            <option value="price_asc">price (ascendant)</option>
+            <option value="price_desc">price (descendant)</option>
+            <option value="capacity_asc">capacity (ascendant)</option>
+            <option value="capacity_desc">capacity (descendant)</option>
+        </select>
+        <br>
+        <input type="submit" value="Apply filter">
+        <a href="{% url 'room_list' %}">Reset filter</a>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Number/name</th>
+                <th>Price per day</th>
+                <th>Capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td>{{ room.name }}</td>
+                <td>{{ room.price_per_day }}</td>
+                <td>{{ room.capacity }}</td>
+                <td>
+                    {% if check_in_date and check_out_date %}
+                        {% if room.available %}
+                            {% if user.is_authenticated %}
+                             <a href="{% url 'book_room' room.id %}">book</a>
+                            {% endif %}
+                        {% else %}
+                         busy
+                        {% endif %}
+                    {% else%}
+
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
